@@ -23,6 +23,8 @@ class ModeloPronostico {
   String dirvienc;
   String raf;
 
+  String? fecha;
+
   ModeloPronostico({
     required this.nes,
     required this.nmun,
@@ -34,6 +36,7 @@ class ModeloPronostico {
     required this.velvien,
     required this.dirvienc,
     required this.raf,
+    this.fecha,
   });
 
   factory ModeloPronostico.fromJson(Map<String, dynamic> json) {
@@ -44,6 +47,7 @@ class ModeloPronostico {
     //nes = json['nes'] == null ? '24' : json['nes'];
 
     return ModeloPronostico(
+      fecha: json['fecha'] ?? "",
       nes: json['nes'] ?? '24',
       nmun: json['nmun'] ?? '13',
       tmax: json['tmax'] ?? '',
