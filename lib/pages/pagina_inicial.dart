@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:smn/custom_widgets/dia_principal.dart';
+import 'package:smn/custom_widgets/widget_dia.dart';
 
 import 'package:smn/models/modelo_municipio.dart';
 import 'package:smn/models/modelo_pronostico.dart';
@@ -86,6 +87,8 @@ class _PaginaInicialState extends State<PaginaInicial> {
 
   @override
   Widget build(BuildContext context) {
+    bool esTelefono = MediaQuery.of(context).size.width <= 600;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amber,
@@ -158,6 +161,69 @@ class _PaginaInicialState extends State<PaginaInicial> {
                 child: Column(
                   children: [
                     DiaPrincipal(dia: diaPrincipal),
+                    ExpansionTile(
+                      title: Text(""),
+                      trailing: Icon(
+                        Icons.info,
+                        size: 40,
+                        color: Colors.amber,
+                      ),
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                            color: Color(0xfffcf8e3),
+                            border: Border.all(
+                              color: Colors.grey,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Temp max: ',
+                                    style: TextStyle(
+                                        color: Colors.redAccent,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text("Puede variar de 1° a 3°C")
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Temp min: ',
+                                    style: TextStyle(
+                                        color: Colors.blueAccent,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text("Puede variar +/- 1°C")
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    LayoutBuilder(builder: (context, condicionantes) {
+                      return Flex(
+                        direction: esTelefono ? Axis.vertical : Axis.horizontal,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: List.generate(4, (index) {
+                          return SizedBox(
+                            width: esTelefono
+                                ? condicionantes.maxWidth
+                                : condicionantes.maxWidth / 4,
+                            child: WidgetDia(
+                              pronostico: proveedor_de_dias.pronosticos[index],
+                              index: index,
+                            ),
+                          );
+                        }),
+                      );
+                    }),
                   ],
                 ),
               ),
