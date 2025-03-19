@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:smn/models/modelo_pronostico.dart';
 
 class ServicioCargaPronosticos {
@@ -11,7 +12,22 @@ class ServicioCargaPronosticos {
 
       List<dynamic> pronosticos = jsonDecode(respuesta);
 
-      return pronosticos.map((dia) => ModeloPronostico.fromJson(dia)).toList();
+      DateTime fechaActual = DateTime.now();
+      var formateaFecha = DateFormat("d/MM");
+
+      return pronosticos
+          .asMap()
+          .map((index, dia) {
+            String fechaFormateada;
+            DateTime otroDia = fechaActual.add(Duration(days: index));
+            fechaFormateada = formateaFecha.format(otroDia);
+
+            dia['fecha'] = fechaFormateada;
+
+            return MapEntry(index, ModeloPronostico.fromJson(dia));
+          })
+          .values
+          .toList();
     } catch (e) {
       return [];
     }
