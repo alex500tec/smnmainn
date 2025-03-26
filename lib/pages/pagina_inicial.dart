@@ -8,6 +8,7 @@ import 'package:smn/custom_widgets/widget_dia.dart';
 
 import 'package:smn/models/modelo_municipio.dart';
 import 'package:smn/models/modelo_pronostico.dart';
+import 'package:smn/providers/provider_dias.dart';
 import 'package:smn/providers/provider_lista_municipios.dart';
 import 'package:smn/providers/provider_pronosticos.dart';
 import 'buscar_municipio.dart';
@@ -24,6 +25,7 @@ class _PaginaInicialState extends State<PaginaInicial> {
   bool _isGPSEnabled = false;
   String _hoy = DateFormat("dd MMMM", "es_ES").format(DateTime.now());
   String _ciudad = "Cargando ciudad...";
+  int _diaSeleccionado = 0;
 
   @override
   void initState() {
@@ -81,6 +83,15 @@ class _PaginaInicialState extends State<PaginaInicial> {
               listaDeUbicaciones.first.locality.toString());
       setState(() {
         _ciudad = ciudad.label;
+      });
+    }
+  }
+
+  void _alSeleccionarDia(int index, String fecha) {
+    if (_diaSeleccionado != index) {
+      Provider.of<ProviderDias>(context, listen: false).cargaDia(index);
+      setState(() {
+        _diaSeleccionado = index;
       });
     }
   }
@@ -224,6 +235,43 @@ class _PaginaInicialState extends State<PaginaInicial> {
                         }),
                       );
                     }),
+                    SizedBox(height: 20.0),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          4,
+                          (index) => Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4.0),
+                            child: ChoiceChip(
+                              label: Text(
+                                proveedor_de_dias.pronosticos[index].fecha ??
+                                    '',
+                              ),
+                              selected: index == _diaSeleccionado,
+                              selectedColor: Colors.green,
+                              labelStyle: TextStyle(
+                                color: index == _diaSeleccionado
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              onSelected: (seleccionado) {
+                                if (!proveedor_de_dias.estaCargando) {
+                                  _alSeleccionarDia(
+                                      index,
+                                      proveedor_de_dias
+                                              .pronosticos[index].fecha ??
+                                          '');
+                                }
+                              },
+                              showCheckmark: false,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

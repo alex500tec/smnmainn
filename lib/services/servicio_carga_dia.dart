@@ -8,9 +8,10 @@ class ServicioCargaDia {
   Future<List<ModeloDia>> descargaDia(int index) async {
     try {
       final String response =
-          await rootBundle.loadString('assets/data/dia{$index+1}.json');
+          await rootBundle.loadString("assets/data/dia${index + 1}.json");
 
       List<dynamic> listaDedia = jsonDecode(response);
+      print(listaDedia);
 
       return listaDedia.map((dia) => ModeloDia.fromJson(dia)).toList();
     } catch (e) {
