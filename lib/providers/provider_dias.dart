@@ -3,19 +3,28 @@ import 'package:smn/models/modelo_dia.dart';
 import 'package:smn/services/servicio_carga_dia.dart';
 
 class ProviderDias with ChangeNotifier {
-  List<ModeloDia> _dias = [];
+  List<ModeloDia> _dia = [];
   bool _esta_cargando = false;
 
-  List<ModeloDia> get dias => _dias;
+  List<List<dynamic>> dias = [
+    [],
+    [],
+    [],
+    [],
+  ];
+
+  List<ModeloDia> get dia => _dia;
   bool get estCargando => _esta_cargando;
-  //MODIFICAR AQUI AGREGANDO LISTA DE DIAS
 
   Future<void> cargaDia(int index) async {
     _esta_cargando = true;
     notifyListeners();
 
     try {
-      _dias = await ServicioCargaDia().descargaDia(index);
+      if (dias[index].isEmpty) {
+        _dia = await ServicioCargaDia().descargaDia(index);
+        dias[index] = _dia;
+      }
     } catch (e) {
       //print(e);
     } finally {

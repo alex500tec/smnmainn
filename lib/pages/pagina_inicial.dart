@@ -3,6 +3,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:smn/custom_widgets/acordeon_dias.dart';
 import 'package:smn/custom_widgets/dia_principal.dart';
 import 'package:smn/custom_widgets/widget_dia.dart';
 
@@ -21,20 +22,30 @@ class PaginaInicial extends StatefulWidget {
 }
 
 class _PaginaInicialState extends State<PaginaInicial> {
-  String _status = "Checando GPS";
   bool _isGPSEnabled = false;
   String _hoy = DateFormat("dd MMMM", "es_ES").format(DateTime.now());
   String _ciudad = "Cargando ciudad...";
   int _diaSeleccionado = 0;
+  String _fechaSeleccionada = "";
+  String _fechaPorHoras = "";
 
   @override
   void initState() {
     super.initState();
+    _fechaPorHoras = "para hoy ";
     _getLocation();
 
-    Future.microtask(() {
-      Provider.of<ProviderPronosticos>(context, listen: false)
-          .cargaPronosticos();
+    //Mirotask se jecuta inmediatemente al llamar la UI, aunque no haya widgets en pantalla
+    //addPostFrameCallback se ejecuta hasta que se pintó todos los widgets
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final pronosticoProvider =
+          Provider.of<ProviderPronosticos>(context, listen: false);
+      final diasProvider = 
+          Provider.of<ProviderDias>(context, listen: false);
+
+      pronosticoProvider.cargaPronosticos();
+      diasProvider.cargaDia(_diaSeleccionado);
     });
   }
 
@@ -42,9 +53,6 @@ class _PaginaInicialState extends State<PaginaInicial> {
     _isGPSEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!_isGPSEnabled) {
-      setState(() {
-        _status = "El servicio de ubicación está desactivado";
-      });
       return;
     }
 
@@ -54,19 +62,27 @@ class _PaginaInicialState extends State<PaginaInicial> {
       permisoUbicacion = await Geolocator.requestPermission();
 
       if (permisoUbicacion == LocationPermission.denied) {
-        setState(() {
-          _status = "Permiso denegado";
-        });
+
       } else if (permisoUbicacion == LocationPermission.deniedForever) {
-        setState(() {
-          _status = "Permiso denegado por siempre";
-        });
+
       } else {
         _cargaLaCiudad();
       }
     } else {
       _cargaLaCiudad();
     }
+  }
+
+  Future pidePermisoGPS() async{
+    LocationPermission permisoUbicacion = await Geolocator.checkPermission();
+
+ permisoUbicacion = await Geolocator.requestPermission();
+
+      if (permisoUbicacion == LocationPermission.denied || permisoUbicacion == LocationPermission.deniedForever) {
+      return;
+      } else {
+        _cargaLaCiudad();
+      }
   }
 
   Future<void> _cargaLaCiudad() async {
@@ -90,7 +106,22 @@ class _PaginaInicialState extends State<PaginaInicial> {
   void _alSeleccionarDia(int index, String fecha) {
     if (_diaSeleccionado != index) {
       Provider.of<ProviderDias>(context, listen: false).cargaDia(index);
+      
+      if(index==0){
+        _fechaPorHoras = "para hoy";
+      }else{
+        DateFormat formatoDeEntrada = DateFormat('d/MM');
+        DateTime fechaParseada = formatoDeEntrada.parse(fecha);
+        fechaParseada = DateTime(
+          DateTime.now().year,fechaParseada.month, fechaParseada.day
+        );
+        String nombreDia = DateFormat('EEEE','es_ES').format(fechaParseada);
+
+        _fechaPorHoras = "del $nombreDia";
+      }
+      
       setState(() {
+        _fechaSeleccionada = fecha;
         _diaSeleccionado = index;
       });
     }
@@ -108,7 +139,15 @@ class _PaginaInicialState extends State<PaginaInicial> {
           style: TextStyle(fontSize: 18),
         ),
       ),
-      body: Column(
+      body: 
+      !_isGPSEnabled?
+      Center(
+        child: 
+        ElevatedButton(onPressed: pidePermisoGPS,
+             child: Text('Seleccione un municipio')),
+      )
+      :      
+      Column(
         children: <Widget>[
           GestureDetector(
             onTap: () => Navigator.push(
@@ -271,6 +310,24 @@ class _PaginaInicialState extends State<PaginaInicial> {
                           ),
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+mainAxisAlignment: MainAxisAlignment.center,
+children: [
+  const Text('Pronóstico por horas '),
+  Text(_fechaPorHoras),
+  Text(_fechaSeleccionada),
+],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),                    
+                    AcordeonDias(
+                      fecha: _fechaSeleccionada,
+                      index: _diaSeleccionado,
                     )
                   ],
                 ),
