@@ -15,8 +15,11 @@ class TextoGrisNegrita extends StatelessWidget {
     return Row(
       children: [
         Text(texto),
-        Text(medida,
-          style: TextStyle(fontWeight: FontWeight.bold),
+        Text(
+          medida,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smn/custom_widgets/texto_gris_negrita.dart';
 import 'package:smn/models/modelo_pronostico.dart';
+import 'package:smn/utils/utils.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 class WidgetDia extends StatelessWidget {
@@ -63,11 +64,7 @@ class WidgetDia extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: tamano,
-                    child: Icon(
-                      WeatherIcons.day_sunny,
-                      size: 80,
-                      color: Colors.amber,
-                    ),
+                    child: Utils.Icono(pronostico.desciel, 80),
                   ),
                   SizedBox(
                     width: tamano,

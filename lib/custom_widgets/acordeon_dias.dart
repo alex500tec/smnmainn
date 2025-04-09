@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:smn/models/modelo_dia.dart';
 import 'package:smn/providers/provider_dias.dart';
 import 'package:weather_icons/weather_icons.dart';
+import '../utils/utils.dart';
 
 class AcordeonDias extends StatelessWidget {
   final String fecha;
@@ -49,7 +50,7 @@ class AcordeonDias extends StatelessWidget {
                             Text(fecha, style: TextStyle(color: Colors.black26),),
                             ],
                         ),
-                      Icon(Icons.sunny, color: Colors.amber, size: 40.0,),
+                      Utils.Icono(dia.desciel, 30),
                       Text("${dia.temp}°C", style: TextStyle(fontSize: 30.0),),
                       Text(dia.desciel, style: TextStyle(fontSize: 15.0),),                      
                       ],
