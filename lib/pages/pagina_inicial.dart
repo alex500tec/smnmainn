@@ -140,13 +140,14 @@ class _PaginaInicialState extends State<PaginaInicial> {
         ),
       ),
       body: 
+/*
       !_isGPSEnabled?
       Center(
         child: 
         ElevatedButton(onPressed: pidePermisoGPS,
              child: Text('Seleccione un municipio')),
       )
-      :      
+      :      */
       Column(
         children: <Widget>[
           GestureDetector(
