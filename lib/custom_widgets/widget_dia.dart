@@ -20,7 +20,9 @@ class WidgetDia extends StatelessWidget {
     String fechaFormateada = pronostico.fecha ?? "";
 
     DateFormat formatoEntrada = DateFormat("d/MM");
-    DateTime fechaConvertida = formatoEntrada.parse(fechaFormateada);
+    DateTime fechaConvertida = formatoEntrada.parse(
+      fechaFormateada,
+    );
 
     if (index == 0) {
       fechaFormateada = "Hoy";
