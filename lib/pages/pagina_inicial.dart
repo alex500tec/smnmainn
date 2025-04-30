@@ -37,22 +37,26 @@ class _PaginaInicialState extends State<PaginaInicial> {
 
     //Mirotask se jecuta inmediatemente al llamar la UI, aunque no haya widgets en pantalla
     //addPostFrameCallback se ejecuta hasta que se pintó todos los widgets
-
+    /*
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final pronosticoProvider =
           Provider.of<ProviderPronosticos>(context, listen: false);
-      final diasProvider = 
-          Provider.of<ProviderDias>(context, listen: false);
+      final diasProvider = Provider.of<ProviderDias>(context, listen: false);
 
       pronosticoProvider.cargaPronosticos();
       diasProvider.cargaDia(_diaSeleccionado);
     });
+    */
   }
 
   Future<void> _getLocation() async {
-    _isGPSEnabled = await Geolocator.isLocationServiceEnabled();
+    bool isGPSEnabled = await Geolocator.isLocationServiceEnabled();
 
-    if (!_isGPSEnabled) {
+    setState(() {
+      _isGPSEnabled = isGPSEnabled;
+    });
+
+    if (!isGPSEnabled) {
       return;
     }
 
@@ -61,11 +65,8 @@ class _PaginaInicialState extends State<PaginaInicial> {
     if (permisoUbicacion == LocationPermission.denied) {
       permisoUbicacion = await Geolocator.requestPermission();
 
-      if (permisoUbicacion == LocationPermission.denied) {
-
-      } else if (permisoUbicacion == LocationPermission.deniedForever) {
-
-      } else {
+      if (permisoUbicacion != LocationPermission.denied &&
+          permisoUbicacion != LocationPermission.deniedForever) {
         _cargaLaCiudad();
       }
     } else {
@@ -73,16 +74,17 @@ class _PaginaInicialState extends State<PaginaInicial> {
     }
   }
 
-  Future pidePermisoGPS() async{
+  Future pidePermisoGPS() async {
     LocationPermission permisoUbicacion = await Geolocator.checkPermission();
 
- permisoUbicacion = await Geolocator.requestPermission();
+    permisoUbicacion = await Geolocator.requestPermission();
 
-      if (permisoUbicacion == LocationPermission.denied || permisoUbicacion == LocationPermission.deniedForever) {
+    if (permisoUbicacion == LocationPermission.denied ||
+        permisoUbicacion == LocationPermission.deniedForever) {
       return;
-      } else {
-        _cargaLaCiudad();
-      }
+    } else {
+      _cargaLaCiudad();
+    }
   }
 
   Future<void> _cargaLaCiudad() async {
@@ -94,32 +96,40 @@ class _PaginaInicialState extends State<PaginaInicial> {
         await placemarkFromCoordinates(posicion.latitude, posicion.longitude);
 
     if (listaDeUbicaciones.isNotEmpty) {
+      String ciudad =
+          "${listaDeUbicaciones.first.locality}, ${listaDeUbicaciones.first.administrativeArea}";
+
+      setState(() {
+        _ciudad = ciudad;
+      });
+
+      ModeloMunicipio municipio = await ProviderListaMunicipios()
+          .obtenerMunicipioPorNombre(context, ciudad);
+
+      /*
       ModeloMunicipio ciudad = await ProviderListaMunicipios()
           .obtenerMunicipioPorNombre(
               listaDeUbicaciones.first.locality.toString());
-      setState(() {
-        _ciudad = ciudad.label;
-      });
+      */
     }
   }
 
   void _alSeleccionarDia(int index, String fecha) {
     if (_diaSeleccionado != index) {
       Provider.of<ProviderDias>(context, listen: false).cargaDia(index);
-      
-      if(index==0){
+
+      if (index == 0) {
         _fechaPorHoras = "para hoy";
-      }else{
+      } else {
         DateFormat formatoDeEntrada = DateFormat('d/MM');
         DateTime fechaParseada = formatoDeEntrada.parse(fecha);
         fechaParseada = DateTime(
-          DateTime.now().year,fechaParseada.month, fechaParseada.day
-        );
-        String nombreDia = DateFormat('EEEE','es_ES').format(fechaParseada);
+            DateTime.now().year, fechaParseada.month, fechaParseada.day);
+        String nombreDia = DateFormat('EEEE', 'es_ES').format(fechaParseada);
 
         _fechaPorHoras = "del $nombreDia";
       }
-      
+
       setState(() {
         _fechaSeleccionada = fecha;
         _diaSeleccionado = index;
@@ -139,7 +149,7 @@ class _PaginaInicialState extends State<PaginaInicial> {
           style: TextStyle(fontSize: 18),
         ),
       ),
-      body: 
+      body:
 /*
       !_isGPSEnabled?
       Center(
@@ -148,7 +158,7 @@ class _PaginaInicialState extends State<PaginaInicial> {
              child: Text('Seleccione un municipio')),
       )
       :      */
-      Column(
+          Column(
         children: <Widget>[
           GestureDetector(
             onTap: () => Navigator.push(
@@ -316,20 +326,22 @@ class _PaginaInicialState extends State<PaginaInicial> {
                       height: 8,
                     ),
                     Row(
-mainAxisAlignment: MainAxisAlignment.center,
-children: [
-  const Text('Pronóstico por horas '),
-  Text(_fechaPorHoras),
-  Text(_fechaSeleccionada),
-],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Pronóstico por horas '),
+                        Text(_fechaPorHoras),
+                        Text(_fechaSeleccionada),
+                      ],
                     ),
                     SizedBox(
                       height: 8,
-                    ),                    
+                    ),
+                    /*
                     AcordeonDias(
                       fecha: _fechaSeleccionada,
                       index: _diaSeleccionado,
                     )
+                    */
                   ],
                 ),
               ),

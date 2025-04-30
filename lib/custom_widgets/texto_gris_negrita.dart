@@ -14,10 +14,14 @@ class TextoGrisNegrita extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(texto),
+        Text(
+          texto,
+          style: TextStyle(fontSize: 12.0),
+        ),
         Text(
           medida,
           style: TextStyle(
+            fontSize: 12.0,
             fontWeight: FontWeight.bold,
           ),
         ),

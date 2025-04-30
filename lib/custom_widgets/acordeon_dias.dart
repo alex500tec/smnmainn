@@ -47,12 +47,21 @@ class AcordeonDias extends StatelessWidget {
                         Column(
                           children: [
                             Text('${dia.time}:00h'),
-                            Text(fecha, style: TextStyle(color: Colors.black26),),
-                            ],
+                            Text(
+                              fecha,
+                              style: TextStyle(color: Colors.black26),
+                            ),
+                          ],
                         ),
-                      Utils.Icono(dia.desciel, 30),
-                      Text("${dia.temp}°C", style: TextStyle(fontSize: 30.0),),
-                      Text(dia.desciel, style: TextStyle(fontSize: 15.0),),                      
+                        Utils.Icono(dia.desciel, 30),
+                        Text(
+                          "${dia.temp}°C",
+                          style: TextStyle(fontSize: 30.0),
+                        ),
+                        Text(
+                          dia.desciel,
+                          style: TextStyle(fontSize: 15.0),
+                        ),
                       ],
                     ),
                   ),

@@ -1,3 +1,5 @@
+import 'package:smn/utils/utils.dart';
+
 class ModeloDia {
   String nes;
   String nmun;
@@ -46,7 +48,7 @@ class ModeloDia {
       hloc: json["hloc"],
       nhor: json["nhor"],
       dsem: json["dsem"],
-      temp: json["temp"],
+      temp: Utils.redondearNumero(json["temp"]),
       desciel: json["desciel"],
       probprec: json["probprec"],
       prec: json["prec"],

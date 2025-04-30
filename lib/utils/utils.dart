@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 class Utils {
-  static Icon IconoDireccionViento(String dirvien, [double tamano = 40.0]) {
+  static Icon IconoDireccionViento(String dirvien, [double tamano = 10.0]) {
     IconData temp;
     switch (dirvien) {
       case 'Norte':
@@ -29,7 +29,7 @@ class Utils {
     );
   }
 
-  static Icon Icono(String desciel, [double tamano = 40.0]) {
+  static Icon Icono(String desciel, [double tamano = 10.0]) {
     IconData temp;
     switch (desciel) {
       case 'Cielo nublado':
@@ -53,5 +53,23 @@ class Utils {
       color: Colors.amber,
       size: tamano,
     );
+  }
+
+  static redondearNumero(String valor) {
+    if (double.tryParse(valor) != null) {
+      return double.parse(valor).round().toString();
+    }
+    return valor;
+  }
+
+  static convertirDecimalenRango(String valor) {
+    if (double.tryParse(valor) != null) {
+      int valorRedondeado = (double.parse(valor).round() / 5).round() * 5;
+      int min = valorRedondeado;
+      int max = valorRedondeado + 5;
+
+      return "$min a $max kms/h";
+    }
+    return valor;
   }
 }

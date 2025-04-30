@@ -111,14 +111,14 @@ class WidgetDia extends StatelessWidget {
                   SizedBox(
                     width: tamano,
                     child: TextoGrisNegrita(
-                      texto: "Vel del viento",
-                      medida: "${pronostico.velvien} kms/h",
+                      texto: "Vel viento: ",
+                      medida: "${pronostico.velvien}",
                     ),
                   ),
                   SizedBox(
                     width: tamano,
                     child: TextoGrisNegrita(
-                      texto: "Dir del viento",
+                      texto: "Dir del viento: ",
                       medida: "${pronostico.dirvienc}",
                     ),
                   ),
