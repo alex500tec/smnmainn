@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:diacritic/diacritic.dart';
 
 import 'package:smn/models/modelo_municipio.dart';
+import 'package:smn/providers/provider_dias.dart';
+import 'package:smn/providers/provider_pronosticos.dart';
 import 'package:smn/services/servicio_carga_municipios.dart';
 
 //extends, implements, mixin
@@ -46,18 +50,41 @@ class ProviderListaMunicipios with ChangeNotifier {
   }
 
   Future<ModeloMunicipio> obtenerMunicipioPorNombre(
-      String nombreDeMunicipio) async {
+      BuildContext context, String nombreDeMunicipio) async {
     if (_lista_de_municipios.isEmpty) {
       await cargaMunicipios();
     }
 
-    final ciudad = _lista_de_municipios.firstWhere(
-        (municipio) => municipio.label
-            .toLowerCase()
-            .contains(nombreDeMunicipio.toLowerCase()),
-        orElse: () => ModeloMunicipio(
-            label: "Ciudad no encontrada", idEdo: "", idMpo: ""));
+    final providerPronostico =
+        Provider.of<ProviderPronosticos>(context, listen: false);
+    final diasProvider = Provider.of<ProviderDias>(context, listen: false);
 
-    return ciudad;
+    final nombreProcesado = removeDiacritics(nombreDeMunicipio.toLowerCase());
+
+    _esta_cargando = true;
+
+    notifyListeners();
+
+    ModeloMunicipio ubicacionActual = _lista_de_municipios.firstWhere(
+        (elemento) {
+      final nombreEnLista = removeDiacritics(elemento.label.toLowerCase());
+      return nombreEnLista.contains(nombreProcesado.toLowerCase());
+    },
+        orElse: () => ModeloMunicipio(
+            label: "Municipio no encontrado", idEdo: "", idMpo: "idMpo"));
+
+    _esta_cargando = false;
+    notifyListeners();
+
+    //Agregar validacion si no se encontró la ciudad
+    await providerPronostico.cargaPronosticos(
+      ubicacionActual.idEdo,
+      ubicacionActual.idMpo,
+      nuevaCiudad: true,
+    );
+
+    diasProvider.cargaDia(0);
+
+    return ubicacionActual;
   }
 }

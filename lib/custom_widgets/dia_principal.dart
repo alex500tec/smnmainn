@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smn/custom_widgets/texto_gris_negrita.dart';
 import 'package:smn/models/modelo_pronostico.dart';
-import 'package:weather_icons/weather_icons.dart';
 import '../utils/utils.dart';
 
 class DiaPrincipal extends StatelessWidget {
@@ -43,7 +42,7 @@ class DiaPrincipal extends StatelessWidget {
         Text(dia.desciel),
         Container(
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Utils.Icono(dia.desciel, 80),
+            Utils.Icono(dia.desciel, 60),
             Text(
               dia.tmax,
               style: TextStyle(

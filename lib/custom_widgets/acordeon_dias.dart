@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smn/models/modelo_dia.dart';
 import 'package:smn/providers/provider_dias.dart';
-import 'package:weather_icons/weather_icons.dart';
 import '../utils/utils.dart';
 
 class AcordeonDias extends StatelessWidget {
@@ -47,12 +46,21 @@ class AcordeonDias extends StatelessWidget {
                         Column(
                           children: [
                             Text('${dia.time}:00h'),
-                            Text(fecha, style: TextStyle(color: Colors.black26),),
-                            ],
+                            Text(
+                              fecha,
+                              style: TextStyle(color: Colors.black26),
+                            ),
+                          ],
                         ),
-                      Utils.Icono(dia.desciel, 30),
-                      Text("${dia.temp}°C", style: TextStyle(fontSize: 30.0),),
-                      Text(dia.desciel, style: TextStyle(fontSize: 15.0),),                      
+                        Utils.Icono(dia.desciel, 30),
+                        Text(
+                          "${dia.temp}°C",
+                          style: TextStyle(fontSize: 30.0),
+                        ),
+                        Text(
+                          dia.desciel,
+                          style: TextStyle(fontSize: 15.0),
+                        ),
                       ],
                     ),
                   ),

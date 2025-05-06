@@ -10,6 +10,7 @@
     "dirvienc": "Noroeste",
     "raf": "10.4"
  */
+import 'package:smn/utils/utils.dart';
 
 class ModeloPronostico {
   String nes;
@@ -50,14 +51,14 @@ class ModeloPronostico {
       fecha: json['fecha'] ?? "",
       nes: json['nes'] ?? '24',
       nmun: json['nmun'] ?? '13',
-      tmax: json['tmax'] ?? '',
-      tmin: json['tmin'] ?? '',
+      tmax: Utils.redondearNumero(json['tmax']) ?? '',
+      tmin: Utils.redondearNumero(json['tmin']) ?? '',
       desciel: json['desciel'] ?? '',
-      probprec: json['probprec'] ?? '',
-      prec: json['prec'] ?? '',
-      velvien: json['velvien'] ?? '',
+      probprec: Utils.redondearNumero(json['probprec']) ?? '',
+      prec: Utils.redondearNumero(json['prec']) ?? '',
+      velvien: Utils.convertirDecimalenRango(json['velvien']) ?? '',
       dirvienc: json['dirvienc'] ?? '',
-      raf: json['raf'] ?? '',
+      raf: Utils.redondearNumero(json['raf']) ?? '',
     );
   }
 }
