@@ -34,19 +34,6 @@ class _PaginaInicialState extends State<PaginaInicial> {
     super.initState();
     _fechaPorHoras = "para hoy ";
     _getLocation();
-
-    //Mirotask se jecuta inmediatemente al llamar la UI, aunque no haya widgets en pantalla
-    //addPostFrameCallback se ejecuta hasta que se pintó todos los widgets
-    /*
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final pronosticoProvider =
-          Provider.of<ProviderPronosticos>(context, listen: false);
-      final diasProvider = Provider.of<ProviderDias>(context, listen: false);
-
-      pronosticoProvider.cargaPronosticos();
-      diasProvider.cargaDia(_diaSeleccionado);
-    });
-    */
   }
 
   Future<void> _getLocation() async {
@@ -82,9 +69,9 @@ class _PaginaInicialState extends State<PaginaInicial> {
     if (permisoUbicacion == LocationPermission.denied ||
         permisoUbicacion == LocationPermission.deniedForever) {
       return;
-    } else {
-      _cargaLaCiudad();
     }
+
+    _cargaLaCiudad();
   }
 
   Future<void> _cargaLaCiudad() async {
@@ -92,9 +79,13 @@ class _PaginaInicialState extends State<PaginaInicial> {
       desiredAccuracy: LocationAccuracy.high,
     );
 
+    print('-----------------');
+    print(posicion);
+    print('-----------------');
     List<Placemark> listaDeUbicaciones =
         await placemarkFromCoordinates(posicion.latitude, posicion.longitude);
-
+    print('-----------------SE ENCONTRARON----------------');
+    print(listaDeUbicaciones);
     if (listaDeUbicaciones.isNotEmpty) {
       String ciudad =
           "${listaDeUbicaciones.first.locality}, ${listaDeUbicaciones.first.administrativeArea}";
@@ -105,12 +96,6 @@ class _PaginaInicialState extends State<PaginaInicial> {
 
       ModeloMunicipio municipio = await ProviderListaMunicipios()
           .obtenerMunicipioPorNombre(context, ciudad);
-
-      /*
-      ModeloMunicipio ciudad = await ProviderListaMunicipios()
-          .obtenerMunicipioPorNombre(
-              listaDeUbicaciones.first.locality.toString());
-      */
     }
   }
 
@@ -200,7 +185,21 @@ class _PaginaInicialState extends State<PaginaInicial> {
               fontSize: 24,
             ),
           ),
-          Text(_hoy),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.access_time,
+                color: Colors.amber,
+                size: 15,
+              ),
+              const Text('Pronóstico para hoy '),
+              Text(
+                _hoy,
+                style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+              ),
+            ],
+          ),
           Consumer<ProviderPronosticos>(
               builder: (context, proveedor_de_dias, child) {
             if (proveedor_de_dias.estaCargando) {
@@ -336,12 +335,10 @@ class _PaginaInicialState extends State<PaginaInicial> {
                     SizedBox(
                       height: 8,
                     ),
-                    /*
                     AcordeonDias(
                       fecha: _fechaSeleccionada,
                       index: _diaSeleccionado,
                     )
-                    */
                   ],
                 ),
               ),

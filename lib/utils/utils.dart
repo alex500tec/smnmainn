@@ -64,7 +64,7 @@ class Utils {
 
   static convertirDecimalenRango(String valor) {
     if (double.tryParse(valor) != null) {
-      int valorRedondeado = (double.parse(valor).round() / 5).round() * 5;
+      int valorRedondeado = (double.parse(valor).floor() / 5).floor() * 5;
       int min = valorRedondeado;
       int max = valorRedondeado + 5;
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smn/models/modelo_dia.dart';
 import 'package:smn/providers/provider_dias.dart';
-import 'package:weather_icons/weather_icons.dart';
 import '../utils/utils.dart';
 
 class AcordeonDias extends StatelessWidget {
