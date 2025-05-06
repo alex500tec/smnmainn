@@ -100,7 +100,8 @@ class _PaginaInicialState extends State<PaginaInicial> {
 
   void _alSeleccionarDia(int index, String fecha) {
     if (_diaSeleccionado != index) {
-      Provider.of<ProviderDias>(context, listen: false).cargaDia(index);
+      Provider.of<ProviderDias>(context, listen: false)
+          .cargaDia(context, index);
 
       if (index == 0) {
         _fechaPorHoras = "para hoy";

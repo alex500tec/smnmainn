@@ -78,12 +78,11 @@ class ProviderListaMunicipios with ChangeNotifier {
 
     //Agregar validacion si no se encontró la ciudad
     await providerPronostico.cargaPronosticos(
-      ubicacionActual.idEdo,
-      ubicacionActual.idMpo,
+      context,
       nuevaCiudad: true,
     );
 
-    diasProvider.cargaDia(0);
+    diasProvider.cargaDia(context, 0);
 
     return ubicacionActual;
   }
