@@ -78,24 +78,23 @@ class _PaginaInicialState extends State<PaginaInicial> {
     Position posicion = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
+    try {
+      List<Placemark> listaDeUbicaciones =
+          await placemarkFromCoordinates(posicion.latitude, posicion.longitude);
 
-    print('-----------------');
-    print(posicion);
-    print('-----------------');
-    List<Placemark> listaDeUbicaciones =
-        await placemarkFromCoordinates(posicion.latitude, posicion.longitude);
-    print('-----------------SE ENCONTRARON----------------');
-    print(listaDeUbicaciones);
-    if (listaDeUbicaciones.isNotEmpty) {
-      String ciudad =
-          "${listaDeUbicaciones.first.locality}, ${listaDeUbicaciones.first.administrativeArea}";
+      if (listaDeUbicaciones.isNotEmpty) {
+        String ciudad =
+            "${listaDeUbicaciones.first.locality}, ${listaDeUbicaciones.first.administrativeArea}";
 
-      setState(() {
-        _ciudad = ciudad;
-      });
+        setState(() {
+          _ciudad = ciudad;
+        });
 
-      ModeloMunicipio municipio = await ProviderListaMunicipios()
-          .obtenerMunicipioPorNombre(context, ciudad);
+        await ProviderListaMunicipios()
+            .obtenerMunicipioPorNombre(context, ciudad);
+      }
+    } catch (e) {
+      print("Error obteniendo la ciudad: $e");
     }
   }
 
