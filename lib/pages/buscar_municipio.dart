@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smn/models/modelo_municipio.dart';
 import 'package:smn/providers/provider_lista_municipios.dart';
+import 'package:smn/providers/provider_municipio.dart';
 
 class BuscarMunicipio extends StatefulWidget {
   const BuscarMunicipio({super.key});
@@ -20,6 +22,16 @@ class _BuscarMunicipioState extends State<BuscarMunicipio> {
       Provider.of<ProviderListaMunicipios>(context, listen: false)
           .cargaMunicipios();
     });
+  }
+
+  Future cambiaMunicipio(ModeloMunicipio municipio) async {
+    await Provider.of<ProviderMunicipio>(context, listen: false).setCiudad(
+        context,
+        nombre: municipio.label,
+        IdEdo: municipio.idEdo,
+        IdMpo: municipio.idMpo);
+
+    Navigator.pop(context);
   }
 
   @override
@@ -60,7 +72,7 @@ class _BuscarMunicipioState extends State<BuscarMunicipio> {
                         .listaDeMunicipiosFiltrada[index];
 
                     return ListTile(
-                      onTap: () => print(municipio.label),
+                      onTap: () => cambiaMunicipio(municipio),
                       title: Text(municipio.label),
                     );
                   },

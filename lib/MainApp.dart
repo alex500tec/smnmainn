@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:smn/pages/pagina_inicial.dart';
 import 'package:smn/providers/provider_dias.dart';
 import 'package:smn/providers/provider_lista_municipios.dart';
+import 'package:smn/providers/provider_municipio.dart';
 import 'package:smn/providers/provider_pronosticos.dart';
 
 class MainApp extends StatelessWidget {
@@ -13,6 +14,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => ProviderMunicipio(),
+        ),
         ChangeNotifierProvider(
           create: (context) => ProviderListaMunicipios(),
         ),

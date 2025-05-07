@@ -9,7 +9,7 @@ class ProviderPronosticos with ChangeNotifier {
   List<ModeloPronostico> get pronosticos => _pronosticos;
   bool get estaCargando => _esta_cargando;
 
-  Future<void> cargaPronosticos(String idEdo, String idMpo,
+  Future<void> cargaPronosticos(BuildContext context,
       {bool? nuevaCiudad}) async {
     _esta_cargando = true;
     notifyListeners();
@@ -19,7 +19,7 @@ class ProviderPronosticos with ChangeNotifier {
     try {
       if (_pronosticos.isEmpty || tieneNuevaCiudad) {
         _pronosticos =
-            await ServicioCargaPronosticos().descargaPronosticos(idEdo, idMpo);
+            await ServicioCargaPronosticos().descargaPronosticos(context);
       }
     } catch (error) {
       print(error);

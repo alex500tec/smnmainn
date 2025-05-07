@@ -16,13 +16,13 @@ class ProviderDias with ChangeNotifier {
   List<ModeloDia> get dia => _dia;
   bool get estCargando => _esta_cargando;
 
-  Future<void> cargaDia(int index) async {
+  Future<void> cargaDia(BuildContext context, int index) async {
     _esta_cargando = true;
     notifyListeners();
 
     try {
       if (dias[index].isEmpty) {
-        _dia = await ServicioCargaDia().descargaDia(index);
+        _dia = await ServicioCargaDia().descargaDia(context, index);
         dias[index] = _dia;
       }
     } catch (e) {
