@@ -16,4 +16,7 @@ class ModeloMunicipio {
       idMpo: json['id_mpo'] ?? "13",
     );
   }
+
+  Map<String, dynamic> toJson() =>
+      {'label': label, 'idEdo': idEdo, 'idMpo': idMpo};
 }

@@ -6,12 +6,14 @@ import 'package:provider/provider.dart';
 import 'package:smn/custom_widgets/acordeon_dias.dart';
 import 'package:smn/custom_widgets/dia_principal.dart';
 import 'package:smn/custom_widgets/widget_dia.dart';
-
 import 'package:smn/models/modelo_municipio.dart';
+
 import 'package:smn/models/modelo_pronostico.dart';
 import 'package:smn/providers/provider_dias.dart';
 import 'package:smn/providers/provider_lista_municipios.dart';
+import 'package:smn/providers/provider_municipio.dart';
 import 'package:smn/providers/provider_pronosticos.dart';
+import 'package:smn/utils/favoritos.dart';
 import 'buscar_municipio.dart';
 
 class PaginaInicial extends StatefulWidget {
@@ -29,11 +31,15 @@ class _PaginaInicialState extends State<PaginaInicial> {
   String _fechaSeleccionada = "";
   String _fechaPorHoras = "";
 
+  List<String> ciudadesFavoritas = [];
+  List<ModeloMunicipio> municipios = [];
+
   @override
   void initState() {
     super.initState();
     _fechaPorHoras = "para hoy ";
     _getLocation();
+    _cargarFavoritos();
   }
 
   Future<void> _getLocation() async {
@@ -41,6 +47,9 @@ class _PaginaInicialState extends State<PaginaInicial> {
 
     setState(() {
       _isGPSEnabled = isGPSEnabled;
+      DateTime fechaActual = DateTime.now();
+      var formateaFecha = DateFormat("d/MM");
+      _fechaSeleccionada = formateaFecha.format(fechaActual);
     });
 
     if (!isGPSEnabled) {
@@ -122,12 +131,48 @@ class _PaginaInicialState extends State<PaginaInicial> {
     }
   }
 
+  void _cargarFavoritos() async {
+    final favoritos = await Favoritos.obtenerFavoritos();
+    setState(() {
+      ciudadesFavoritas = favoritos.map((c) {
+        return c.label;
+      }).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     bool esTelefono = MediaQuery.of(context).size.width <= 600;
 
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          Consumer<ProviderMunicipio>(builder: (contexto, proveedor, child) {
+            final esFavorito =
+                ciudadesFavoritas.contains(proveedor.ciudadNombre);
+            return proveedor.ciudadNombre != null
+                ? IconButton(
+                    onPressed: () async {
+                      if (esFavorito) {
+                        await Favoritos.eliminarDeFavoritos(
+                          proveedor.idEdo.toString(),
+                          proveedor.idMpo.toString(),
+                        );
+                      } else {
+                        await Favoritos.agregarAFavoritos(ModeloMunicipio(
+                          label: proveedor.ciudadNombre.toString(),
+                          idEdo: proveedor.idEdo.toString(),
+                          idMpo: proveedor.idMpo.toString(),
+                        ));
+                      }
+                      _cargarFavoritos();
+                    },
+                    icon: Icon(
+                        esFavorito ? Icons.favorite : Icons.favorite_border),
+                  )
+                : SizedBox();
+          })
+        ],
         backgroundColor: Colors.amber,
         title: Text(
           'Pronóstico del Tiempo por Municipios',
@@ -178,13 +223,16 @@ class _PaginaInicialState extends State<PaginaInicial> {
           SizedBox(
             height: 20,
           ),
-          Text(
-            _ciudad,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
-          ),
+          Consumer<ProviderMunicipio>(
+              builder: (context, proveedormunicipio, child) {
+            return Text(
+              (proveedormunicipio.ciudadNombre ?? "Elija la ciudad").toString(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
+            );
+          }),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

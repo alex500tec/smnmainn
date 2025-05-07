@@ -36,34 +36,40 @@ class AcordeonDias extends StatelessWidget {
           return ExpansionPanelRadio(
             value: elementoIndex,
             headerBuilder: (context, isExpanded) {
-              return ListTile(
-                leading: SizedBox(
-                  width: 300,
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          children: [
-                            Text('${dia.time}:00h'),
-                            Text(
-                              fecha,
-                              style: TextStyle(color: Colors.black26),
-                            ),
-                          ],
-                        ),
-                        Utils.Icono(dia.desciel, 30),
                         Text(
-                          "${dia.temp}°C",
-                          style: TextStyle(fontSize: 30.0),
+                          '${dia.time}:00h',
+                          style: TextStyle(fontSize: 16.0),
                         ),
                         Text(
-                          dia.desciel,
-                          style: TextStyle(fontSize: 15.0),
+                          "$fecha",
+                          style:
+                              TextStyle(color: Colors.black26, fontSize: 12.0),
                         ),
                       ],
                     ),
-                  ),
+                    Utils.Icono(dia.desciel, 30),
+                    Text(
+                      "${dia.temp}°C",
+                      style: TextStyle(
+                          fontSize: 24.0, fontWeight: FontWeight.bold),
+                    ),
+                    Flexible(
+                      child: Text(
+                        dia.desciel,
+                        style: TextStyle(fontSize: 14.0),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
               );
             },
@@ -72,7 +78,6 @@ class AcordeonDias extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text("Temperatura: ${dia.temp}°C"),
                   Text("Cielo: ${dia.desciel}"),
