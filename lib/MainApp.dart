@@ -6,14 +6,35 @@ import 'package:smn/providers/provider_dias.dart';
 import 'package:smn/providers/provider_lista_municipios.dart';
 import 'package:smn/providers/provider_municipio.dart';
 import 'package:smn/providers/provider_pronosticos.dart';
+import 'package:smn/providers/provider_tema.dart';
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  MainApp({super.key});
+
+  final ThemeData temaClaro = ThemeData(
+    brightness: Brightness.light,
+    primarySwatch: 
+    scaffoldBackgroundColor: ,
+    appBarTheme: AppBarTheme(
+      backgroundColor: ,
+      foregroundColor: ,
+    ),
+    textTheme: TextTheme(),
+    colorScheme: ColorScheme.fromSwatch(primarySwatch: )
+        .copyWith(secondary: ),
+  );
+
+  final ThemeData temaOscuro = ThemeData();
 
   @override
   Widget build(BuildContext context) {
+    final tema = Provider.of<ProviderTema>(context, listen: false);
+
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => ProviderTema(),
+        ),
         ChangeNotifierProvider(
           create: (context) => ProviderMunicipio(),
         ),
@@ -28,6 +49,9 @@ class MainApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        theme: temaClaro,
+        darkTheme: temaOscuro,
+        themeMode: tema.temaActual,
         debugShowCheckedModeBanner: false,
         home: PaginaInicial(),
       ),

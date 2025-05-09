@@ -13,6 +13,7 @@ import 'package:smn/providers/provider_dias.dart';
 import 'package:smn/providers/provider_lista_municipios.dart';
 import 'package:smn/providers/provider_municipio.dart';
 import 'package:smn/providers/provider_pronosticos.dart';
+import 'package:smn/providers/provider_tema.dart';
 import 'package:smn/utils/favoritos.dart';
 import 'buscar_municipio.dart';
 
@@ -144,7 +145,34 @@ class _PaginaInicialState extends State<PaginaInicial> {
   Widget build(BuildContext context) {
     bool esTelefono = MediaQuery.of(context).size.width <= 600;
 
+    final tema = Provider.of<ProviderTema>(context, listen: false);
+
     return Scaffold(
+      drawer: Drawer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+                padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top,
+            )),
+            Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.home_outlined),
+                  title: const Text('Inicio'),
+                  onTap: () {},
+                ),
+                SwitchListTile(
+                  title: Text('Modo Oscuro'),
+                  value: tema.esOscuro,
+                  onChanged: (value) => tema.cambiaTema(value),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
       appBar: AppBar(
         actions: [
           Consumer<ProviderMunicipio>(builder: (contexto, proveedor, child) {
