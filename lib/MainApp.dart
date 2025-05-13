@@ -11,9 +11,11 @@ import 'package:smn/providers/provider_tema.dart';
 class MainApp extends StatelessWidget {
   MainApp({super.key});
 
+  @override
+  Widget build(BuildContext context) {
   final ThemeData temaClaro = ThemeData(
     brightness: Brightness.light,
-    primarySwatch: 
+    primarySwatch:
     scaffoldBackgroundColor: ,
     appBarTheme: AppBarTheme(
       backgroundColor: ,
@@ -25,10 +27,6 @@ class MainApp extends StatelessWidget {
   );
 
   final ThemeData temaOscuro = ThemeData();
-
-  @override
-  Widget build(BuildContext context) {
-    final tema = Provider.of<ProviderTema>(context, listen: false);
 
     return MultiProvider(
       providers: [
@@ -48,13 +46,16 @@ class MainApp extends StatelessWidget {
           create: (context) => ProviderDias(),
         ),
       ],
-      child: MaterialApp(
-        theme: temaClaro,
-        darkTheme: temaOscuro,
-        themeMode: tema.temaActual,
-        debugShowCheckedModeBanner: false,
-        home: PaginaInicial(),
-      ),
+      child: Builder(builder: (context) {
+        final tema = Provider.of<ProviderTema>(context, listen: false);
+        return MaterialApp(
+          theme: temaClaro,
+          darkTheme: temaOscuro,
+          themeMode: tema.temaActual,
+          debugShowCheckedModeBanner: false,
+          home: PaginaInicial(),
+        );
+      }),
     );
   }
 }
