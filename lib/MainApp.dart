@@ -13,20 +13,39 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final ThemeData temaClaro = ThemeData(
-    brightness: Brightness.light,
-    primarySwatch:
-    scaffoldBackgroundColor: ,
-    appBarTheme: AppBarTheme(
-      backgroundColor: ,
-      foregroundColor: ,
-    ),
-    textTheme: TextTheme(),
-    colorScheme: ColorScheme.fromSwatch(primarySwatch: )
-        .copyWith(secondary: ),
-  );
+    final ThemeData temaClaro = ThemeData(
+      brightness: Brightness.light,
+      primarySwatch: Colors.blue,
+      scaffoldBackgroundColor: Color(0xFFE3F2FD),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.lightBlue[700],
+        foregroundColor: Colors.white,
+      ),
+      textTheme: TextTheme(
+        bodyLarge: TextStyle(color: Colors.black87),
+        bodyMedium: TextStyle(color: Colors.black54),
+        titleLarge: TextStyle(color: Colors.black),
+      ),
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+          .copyWith(secondary: Colors.orangeAccent),
+    );
 
-  final ThemeData temaOscuro = ThemeData();
+    final ThemeData temaOscuro = ThemeData(
+      brightness: Brightness.light,
+      primarySwatch: Colors.blue,
+      scaffoldBackgroundColor: Color(0xFFE3F2FD),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.lightBlue[700],
+        foregroundColor: Colors.white,
+      ),
+      textTheme: TextTheme(
+        bodyLarge: TextStyle(color: Colors.black87),
+        bodyMedium: TextStyle(color: Colors.black54),
+        titleLarge: TextStyle(color: Colors.black),
+      ),
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+          .copyWith(secondary: Colors.orangeAccent),
+    );
 
     return MultiProvider(
       providers: [
@@ -47,14 +66,17 @@ class MainApp extends StatelessWidget {
         ),
       ],
       child: Builder(builder: (context) {
-        final tema = Provider.of<ProviderTema>(context, listen: false);
-        return MaterialApp(
-          theme: temaClaro,
-          darkTheme: temaOscuro,
-          themeMode: tema.temaActual,
-          debugShowCheckedModeBanner: false,
-          home: PaginaInicial(),
-        );
+        //final tema = Provider.of<ProviderTema>(context, listen: false);
+
+        return Consumer<ProviderTema>(builder: (context, tema, child) {
+          return MaterialApp(
+            theme: temaClaro,
+            darkTheme: temaOscuro,
+            themeMode: tema.temaActual,
+            debugShowCheckedModeBanner: false,
+            home: PaginaInicial(),
+          );
+        });
       }),
     );
   }
