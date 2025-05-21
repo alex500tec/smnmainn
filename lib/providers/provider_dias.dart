@@ -21,10 +21,10 @@ class ProviderDias with ChangeNotifier {
     notifyListeners();
 
     try {
-      if (dias[index].isEmpty) {
-        _dia = await ServicioCargaDia().descargaDia(context, index);
-        dias[index] = _dia;
-      }
+      //if (dias[index].isEmpty) {
+      _dia = await ServicioCargaDia().descargaDia(context, index);
+      dias[index] = _dia;
+      //}
     } catch (e) {
       //print(e);
     } finally {

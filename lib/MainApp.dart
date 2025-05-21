@@ -8,43 +8,67 @@ import 'package:smn/providers/provider_municipio.dart';
 import 'package:smn/providers/provider_pronosticos.dart';
 import 'package:smn/providers/provider_tema.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MainApp extends StatelessWidget {
-  MainApp({super.key});
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     final ThemeData temaClaro = ThemeData(
       brightness: Brightness.light,
-      primarySwatch: Colors.blue,
-      scaffoldBackgroundColor: Color(0xFFE3F2FD),
+      scaffoldBackgroundColor: Colors.white,
+      primaryColor: Colors.amber,
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.lightBlue[700],
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.amber,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
-      textTheme: TextTheme(
-        bodyLarge: TextStyle(color: Colors.black87),
-        bodyMedium: TextStyle(color: Colors.black54),
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(color: Colors.black),
+        bodyMedium: TextStyle(color: Colors.black),
         titleLarge: TextStyle(color: Colors.black),
+        labelLarge: TextStyle(color: Colors.black),
       ),
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-          .copyWith(secondary: Colors.orangeAccent),
+      iconTheme: const IconThemeData(
+        color: Colors.black,
+      ),
+      colorScheme: ColorScheme.light(
+        primary: Colors.amber,
+        onPrimary: Colors.black,
+        background: Colors.white,
+        onBackground: Colors.black,
+        surface: Colors.white,
+        onSurface: Colors.black,
+      ),
     );
+    final ThemeData temaOscuro = ThemeData.dark().copyWith(
+      scaffoldBackgroundColor: const Color(0xFF121212), // Fondo oscuro
+      primaryColor: Colors.amber, // Color primario ámbar
 
-    final ThemeData temaOscuro = ThemeData(
-      brightness: Brightness.light,
-      primarySwatch: Colors.blue,
-      scaffoldBackgroundColor: Color(0xFFE3F2FD),
-      appBarTheme: AppBarTheme(
-        backgroundColor: Colors.lightBlue[700],
-        foregroundColor: Colors.white,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.amber, // AppBar ámbar
+        foregroundColor: Colors.black, // Texto e íconos en negro sobre ámbar
+        elevation: 0,
       ),
-      textTheme: TextTheme(
-        bodyLarge: TextStyle(color: Colors.black87),
-        bodyMedium: TextStyle(color: Colors.black54),
-        titleLarge: TextStyle(color: Colors.black),
+
+      iconTheme: const IconThemeData(
+        color: Colors.white,
       ),
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-          .copyWith(secondary: Colors.orangeAccent),
+
+      textTheme: ThemeData.dark().textTheme.apply(
+            bodyColor: Colors.white,
+            displayColor: Colors.white,
+          ),
+
+      colorScheme: const ColorScheme.dark(
+        primary: Colors.amber,
+        onPrimary: Colors.black,
+        background: Color(0xFF121212),
+        onBackground: Colors.white,
+        surface: Color(0xFF1E1E1E),
+        onSurface: Colors.white,
+      ),
     );
 
     return MultiProvider(
@@ -66,10 +90,9 @@ class MainApp extends StatelessWidget {
         ),
       ],
       child: Builder(builder: (context) {
-        //final tema = Provider.of<ProviderTema>(context, listen: false);
-
         return Consumer<ProviderTema>(builder: (context, tema, child) {
           return MaterialApp(
+            navigatorKey: navigatorKey,
             theme: temaClaro,
             darkTheme: temaOscuro,
             themeMode: tema.temaActual,
