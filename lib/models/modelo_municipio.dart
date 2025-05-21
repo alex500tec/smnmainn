@@ -11,12 +11,12 @@ class ModeloMunicipio {
 
   factory ModeloMunicipio.fromJson(Map<String, dynamic> json) {
     return ModeloMunicipio(
-      label: json['label'] ?? "Ciudad Valles, San Luis Potosí",
-      idEdo: json['id_edo'] ?? "24",
-      idMpo: json['id_mpo'] ?? "13",
+      label: json['label'] ?? "",
+      idEdo: json['id_edo'] ?? "",
+      idMpo: json['id_mpo'] ?? "",
     );
   }
 
   Map<String, dynamic> toJson() =>
-      {'label': label, 'idEdo': idEdo, 'idMpo': idMpo};
+      {'label': label, 'id_edo': idEdo, 'id_mpo': idMpo};
 }
