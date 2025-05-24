@@ -167,46 +167,64 @@ class _PaginaInicialState extends State<PaginaInicial> {
                   title: Text('Modo Oscuro'),
                   value: tema.esOscuro,
                   onChanged: (value) => tema.cambiaTema(value),
-                )
+                ),
+                ListTile(
+  leading: Icon(Icons.favorite),
+  title: Text("Favoritos"),
+  onTap: () {
+    Navigator.pushNamed(context, '/favoritos');
+  },
+),
               ],
             )
           ],
         ),
       ),
       appBar: AppBar(
-        actions: [
-          Consumer<ProviderMunicipio>(builder: (contexto, proveedor, child) {
-            final esFavorito =
-                ciudadesFavoritas.contains(proveedor.ciudadNombre);
-            return proveedor.ciudadNombre != null
-                ? IconButton(
-                    onPressed: () async {
-                      if (esFavorito) {
-                        await Favoritos.eliminarDeFavoritos(
-                          proveedor.idEdo.toString(),
-                          proveedor.idMpo.toString(),
-                        );
-                      } else {
-                        await Favoritos.agregarAFavoritos(ModeloMunicipio(
-                          label: proveedor.ciudadNombre.toString(),
-                          idEdo: proveedor.idEdo.toString(),
-                          idMpo: proveedor.idMpo.toString(),
-                        ));
-                      }
-                      _cargarFavoritos();
-                    },
-                    icon: Icon(
-                        esFavorito ? Icons.favorite : Icons.favorite_border),
-                  )
-                : SizedBox();
-          })
-        ],
-        backgroundColor: Colors.amber,
-        title: Text(
-          'Pronóstico del Tiempo por Municipios',
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
+  leading: Builder(
+    builder: (BuildContext context) {
+      return IconButton(
+        icon: const Icon(Icons.menu),
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },
+      );
+    },
+  ),
+  actions: [
+    Consumer<ProviderMunicipio>(builder: (contexto, proveedor, child) {
+      final esFavorito =
+          ciudadesFavoritas.contains(proveedor.ciudadNombre);
+      return proveedor.ciudadNombre != null
+          ? IconButton(
+              onPressed: () async {
+                if (esFavorito) {
+                  await Favoritos.eliminarDeFavoritos(
+                    proveedor.idEdo.toString(),
+                    proveedor.idMpo.toString(),
+                  );
+                } else {
+                  await Favoritos.agregarAFavoritos(ModeloMunicipio(
+                    label: proveedor.ciudadNombre.toString(),
+                    idEdo: proveedor.idEdo.toString(),
+                    idMpo: proveedor.idMpo.toString(),
+                  ));
+                }
+                _cargarFavoritos();
+              },
+              icon: Icon(
+                  esFavorito ? Icons.favorite : Icons.favorite_border),
+            )
+          : SizedBox();
+    })
+  ],
+  backgroundColor: Colors.amber,
+  title: Text(
+    'Pronóstico del Tiempo por Municipios',
+    style: TextStyle(fontSize: 18),
+  ),
+),
+
       body:
 /*
       !_isGPSEnabled?

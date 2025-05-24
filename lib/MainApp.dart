@@ -7,6 +7,8 @@ import 'package:smn/providers/provider_lista_municipios.dart';
 import 'package:smn/providers/provider_municipio.dart';
 import 'package:smn/providers/provider_pronosticos.dart';
 import 'package:smn/providers/provider_tema.dart';
+import 'package:smn/pages/pagina_favoritos.dart';
+
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -98,6 +100,9 @@ class MainApp extends StatelessWidget {
             themeMode: tema.temaActual,
             debugShowCheckedModeBanner: false,
             home: PaginaInicial(),
+            routes: {
+  '/favoritos': (context) => PaginaFavoritos(),
+},
           );
         });
       }),
