@@ -17,57 +17,58 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData temaClaro = ThemeData(
-      brightness: Brightness.light,
-      scaffoldBackgroundColor: const Color(0xFFF1F5F9),
-      primaryColor: const Color(0xFF2563EB), // Azul vibrante
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFF2563EB),
-        foregroundColor: Colors.white,
-        elevation: 0,
-      ),
-      textTheme: const TextTheme(
-        bodyLarge: TextStyle(color: Colors.black),
-        bodyMedium: TextStyle(color: Colors.black),
-        titleLarge: TextStyle(color: Colors.black),
-        labelLarge: TextStyle(color: Colors.black),
-      ),
-      iconTheme: const IconThemeData(
-        color: Colors.black,
-      ),
-      colorScheme: const ColorScheme.light(
-        primary: Color(0xFF2563EB),
-        onPrimary: Colors.white,
-        background: Color(0xFFF1F5F9),
-        onBackground: Colors.black,
-        surface: Colors.white,
-        onSurface: Colors.black,
-      ),
-    );
+  brightness: Brightness.light,
+  scaffoldBackgroundColor: const Color(0xFFF0FDF4), // Gris muy claro verdoso
+  primaryColor: const Color(0xFF10B981), // Verde menta
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Color(0xFF10B981),
+    foregroundColor: Colors.white,
+    elevation: 0,
+  ),
+  textTheme: const TextTheme(
+    bodyLarge: TextStyle(color: Colors.black),
+    bodyMedium: TextStyle(color: Colors.black),
+    titleLarge: TextStyle(color: Colors.black),
+    labelLarge: TextStyle(color: Colors.black),
+  ),
+  iconTheme: const IconThemeData(
+    color: Colors.black,
+  ),
+  colorScheme: const ColorScheme.light(
+    primary: Color(0xFF10B981),
+    onPrimary: Colors.white,
+    background: Color(0xFFF0FDF4),
+    onBackground: Colors.black,
+    surface: Colors.white,
+    onSurface: Colors.black,
+  ),
+);
 
-    final ThemeData temaOscuro = ThemeData.dark().copyWith(
-      scaffoldBackgroundColor: const Color(0xFF0F172A), // Fondo oscuro
-      primaryColor: const Color(0xFF60A5FA), // Azul suave
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFF60A5FA),
-        foregroundColor: Colors.black,
-        elevation: 0,
+final ThemeData temaOscuro = ThemeData.dark().copyWith(
+  scaffoldBackgroundColor: const Color(0xFF1E1B4B), // Morado muy oscuro
+  primaryColor: const Color(0xFF8B5CF6), // Morado brillante
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Color(0xFF8B5CF6),
+    foregroundColor: Colors.white,
+    elevation: 0,
+  ),
+  iconTheme: const IconThemeData(
+    color: Colors.white,
+  ),
+  textTheme: ThemeData.dark().textTheme.apply(
+        bodyColor: Colors.white,
+        displayColor: Colors.white,
       ),
-      iconTheme: const IconThemeData(
-        color: Colors.white,
-      ),
-      textTheme: ThemeData.dark().textTheme.apply(
-            bodyColor: Colors.white,
-            displayColor: Colors.white,
-          ),
-      colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF60A5FA),
-        onPrimary: Colors.black,
-        background: Color(0xFF0F172A),
-        onBackground: Colors.white,
-        surface: Color(0xFF1E293B),
-        onSurface: Colors.white,
-      ),
-    );
+  colorScheme: const ColorScheme.dark(
+    primary: Color(0xFF8B5CF6),
+    onPrimary: Colors.white,
+    background: Color(0xFF1E1B4B),
+    onBackground: Colors.white,
+    surface: Color(0xFF312E81), // Morado más claro para elementos de fondo
+    onSurface: Colors.white,
+  ),
+);
+
 
     return MultiProvider(
       providers: [

@@ -218,9 +218,9 @@ class _PaginaInicialState extends State<PaginaInicial> {
           : SizedBox();
     })
   ],
-  backgroundColor: Colors.blue,
+  backgroundColor: Colors.green,
   title: Text(
-    'Orlando del Angel Salas',
+    'Alexandro Mejía Sánchez',
     style: TextStyle(fontSize: 18),
   ),
 ),
