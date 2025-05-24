@@ -218,9 +218,9 @@ class _PaginaInicialState extends State<PaginaInicial> {
           : SizedBox();
     })
   ],
-  backgroundColor: Colors.amber,
+  backgroundColor: Colors.blue,
   title: Text(
-    'Pronóstico del Tiempo por Municipios',
+    'Orlando del Angel Salas',
     style: TextStyle(fontSize: 18),
   ),
 ),

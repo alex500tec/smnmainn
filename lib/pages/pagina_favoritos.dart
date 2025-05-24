@@ -31,7 +31,7 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Favoritos'),
+        title: const Text('Orlando del Angel Salas'),
       ),
       body: favoritos.isEmpty
           ? Center(child: Text('No tienes municipios favoritos'))

@@ -9,7 +9,6 @@ import 'package:smn/providers/provider_pronosticos.dart';
 import 'package:smn/providers/provider_tema.dart';
 import 'package:smn/pages/pagina_favoritos.dart';
 
-
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MainApp extends StatelessWidget {
@@ -19,11 +18,11 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData temaClaro = ThemeData(
       brightness: Brightness.light,
-      scaffoldBackgroundColor: Colors.white,
-      primaryColor: Colors.amber,
-      appBarTheme: AppBarTheme(
-        backgroundColor: Colors.amber,
-        foregroundColor: Colors.black,
+      scaffoldBackgroundColor: const Color(0xFFF1F5F9),
+      primaryColor: const Color(0xFF2563EB), // Azul vibrante
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color(0xFF2563EB),
+        foregroundColor: Colors.white,
         elevation: 0,
       ),
       textTheme: const TextTheme(
@@ -35,61 +34,48 @@ class MainApp extends StatelessWidget {
       iconTheme: const IconThemeData(
         color: Colors.black,
       ),
-      colorScheme: ColorScheme.light(
-        primary: Colors.amber,
-        onPrimary: Colors.black,
-        background: Colors.white,
+      colorScheme: const ColorScheme.light(
+        primary: Color(0xFF2563EB),
+        onPrimary: Colors.white,
+        background: Color(0xFFF1F5F9),
         onBackground: Colors.black,
         surface: Colors.white,
         onSurface: Colors.black,
       ),
     );
-    final ThemeData temaOscuro = ThemeData.dark().copyWith(
-      scaffoldBackgroundColor: const Color(0xFF121212), // Fondo oscuro
-      primaryColor: Colors.amber, // Color primario ámbar
 
+    final ThemeData temaOscuro = ThemeData.dark().copyWith(
+      scaffoldBackgroundColor: const Color(0xFF0F172A), // Fondo oscuro
+      primaryColor: const Color(0xFF60A5FA), // Azul suave
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.amber, // AppBar ámbar
-        foregroundColor: Colors.black, // Texto e íconos en negro sobre ámbar
+        backgroundColor: Color(0xFF60A5FA),
+        foregroundColor: Colors.black,
         elevation: 0,
       ),
-
       iconTheme: const IconThemeData(
         color: Colors.white,
       ),
-
       textTheme: ThemeData.dark().textTheme.apply(
             bodyColor: Colors.white,
             displayColor: Colors.white,
           ),
-
       colorScheme: const ColorScheme.dark(
-        primary: Colors.amber,
+        primary: Color(0xFF60A5FA),
         onPrimary: Colors.black,
-        background: Color(0xFF121212),
+        background: Color(0xFF0F172A),
         onBackground: Colors.white,
-        surface: Color(0xFF1E1E1E),
+        surface: Color(0xFF1E293B),
         onSurface: Colors.white,
       ),
     );
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => ProviderTema(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ProviderMunicipio(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ProviderListaMunicipios(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ProviderPronosticos(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ProviderDias(),
-        ),
+        ChangeNotifierProvider(create: (context) => ProviderTema()),
+        ChangeNotifierProvider(create: (context) => ProviderMunicipio()),
+        ChangeNotifierProvider(create: (context) => ProviderListaMunicipios()),
+        ChangeNotifierProvider(create: (context) => ProviderPronosticos()),
+        ChangeNotifierProvider(create: (context) => ProviderDias()),
       ],
       child: Builder(builder: (context) {
         return Consumer<ProviderTema>(builder: (context, tema, child) {
@@ -101,8 +87,8 @@ class MainApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             home: PaginaInicial(),
             routes: {
-  '/favoritos': (context) => PaginaFavoritos(),
-},
+              '/favoritos': (context) => PaginaFavoritos(),
+            },
           );
         });
       }),
