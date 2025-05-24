@@ -52,7 +52,7 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                           IdEdo: municipio.idEdo,
                           IdMpo: municipio.idMpo,
                         );
-
+                    //Alex Mejia
                     // Vuelve a la pantalla principal (que reacciona al cambio)
                     Navigator.pop(context);
                   },
